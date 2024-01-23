@@ -1,6 +1,7 @@
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class FileRead {
             
             fileIn.close();
         }
+
         catch(IOException e)
         {
             System.out.println(e);
@@ -58,28 +60,19 @@ public class FileRead {
      * @return 
      */
 
+    // Refactored to use Java 11 code instead of pre-Java 11 code (Which is just better)
+    // https://stackoverflow.com/questions/3849692/whole-text-file-to-a-string-in-java
     public String retrieveDataFromFile(String fileName)
     {
-        StringBuilder data = new StringBuilder();
-        
-        // Attempt to read from file and build concatenated String
         try
         {
-            Scanner fileIn = new Scanner(new FileReader(fileName));
-            
-            while(fileIn.hasNext())
-            {
-                data.append(fileIn.nextLine());
-            }
-            
-            fileIn.close();
-            
+            return Files.readString(Path.of(fileName));
         }
-        catch(IOException e)
+        catch (IOException e)
         {
             System.out.println(e);
-        }            
-        return data.toString();
+            return null;
+        }
     }
     
     /**
@@ -118,7 +111,7 @@ public class FileRead {
      * @param delimiter
      * @return 
      */
-   public ArrayList<String> retrieveDataFromFileCustom(String fileName, String delimiter)
+   public ArrayList<String> retrieveDataFromFileCustomDelimiter(String fileName, String delimiter)
     {
         ArrayList<String> fileData = new ArrayList<>();
         
@@ -145,44 +138,54 @@ public class FileRead {
         return fileData;
     }
 
-    public long getTotalLines(String inputFilePath) throws IOException
-    {
-        return Files.lines(Paths.get(inputFilePath)).count();
-    }
-
-    public int getTotalWords(String inputFilePath)
+    // Should Return 466,544 each time since that's how many lines there are in the file
+    // For whatever reason I have to use long for this method because it does not allow int (this is so sad)
+    public long getTotalLines(String inputFilePath)
     {
         try
         {
-            for(int i = 0; i < getTotalLines(inputFilePath); i++)
-            {
-
-            }
+            return Files.lines(Paths.get(inputFilePath)).count();   // The number of lines also equals the number of words, as there is one word per line
         }
         catch (IOException e)
         {
             System.out.println(e);
             return -1;
         }
-
-        return 3424; // temp value
     }
 
-    public boolean doesFileContainString(String inputFilePath, String word, boolean caseSensitive)
+    // Any file path stuff just assumes a path I am referencing is in the root directory (As an example, what should be "AllWords.txt" can only be written as "src/AllWords.txt", or it will think it's in (goodbye 30 minutes of my time))
+    public boolean doesFileContainString(String inputFilePath, String word, boolean isCaseSensitive)
     {
-        String fileContents =  retrieveDataFromFile(inputFilePath);
-        if(!caseSensitive)
+        String fileContents = retrieveDataFromFile(inputFilePath);
+        if(!isCaseSensitive)
         {
-            String formattedFileContents = fileContents.toLowerCase();
+            fileContents = fileContents.toLowerCase();
             String formattedWord = word.toLowerCase();
-
-            return formattedFileContents.contains(word);
         }
-        else
-        {
-            return fileContents.contains(word);
-        }
+        return fileContents.contains(word);
     }
    
-   //Create a method that returns a list that only includes words of a certain length (ex: all the words with 3 letters in them)  
+   //Create a method that returns a list that only includes words of a certain length (ex: all the words with 3 letters in them)
+   public String onlyReturnCertainLengthWords(String file, int maximumLength)
+   {
+       // Phind AI has optimized this code (It used to be a for loop (very inefficient))
+
+       StringBuilder certainLengthWords = new StringBuilder();
+       try (BufferedReader reader = new BufferedReader(new FileReader(file)))
+       {
+           String currentLine;
+           while ((currentLine = reader.readLine()) != null)
+           {
+               if (!(currentLine.length() > maximumLength))
+               {
+                   certainLengthWords.append("\n").append(currentLine);
+               }
+           }
+       }
+       catch (IOException e)
+       {
+           System.out.println(e);
+       }
+       return certainLengthWords.toString();
+   }
 }

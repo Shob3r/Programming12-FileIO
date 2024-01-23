@@ -1,9 +1,8 @@
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.*;
 
 
 public class FileWrite {
@@ -65,7 +64,8 @@ public class FileWrite {
      */
     public void writeNumbers(String fileName, boolean appendData)
     {
-        try {
+        try
+        {
             PrintWriter writer = new PrintWriter(new FileWriter(fileName, appendData));
 
             int num = 1; // variable to hold current number to print
@@ -87,7 +87,6 @@ public class FileWrite {
             {
                 System.out.println(e);
             }
-                
     }
     
     /**
@@ -109,7 +108,7 @@ public class FileWrite {
             {
                 for(int j = 0; j < 10; j++)
                 {
-                    writer.print(num + "" + delimiter); // Print each number with custom delimiter in between
+                    writer.print(num + " " + delimiter); // Print each number with custom delimiter in between
                     num++;
                 }
                 writer.println(); // Create next line
@@ -134,14 +133,15 @@ public class FileWrite {
      */
     public void writeNumbersAdvanced(String fileName, int maxNum, int numsPerRow, boolean appendData)
     {
-        try {
+        try
+        {
             PrintWriter writer = new PrintWriter(new FileWriter(fileName, appendData));
 
             int numRows = maxNum / numsPerRow; // Determine number of rows fitting custom values needed
             int extraNums = maxNum % numsPerRow; // Determine any leftover from above division for final print step
             int num = 1; // Set up variable to track number printing
 
-            String placeholder =  "            ";// Whitespace used to organize output alignment; make bigger if numbers expect to get really big
+            String placeholder =  "            ";// Whitespace used to organize output alignment; make bigger if numbers expect to get huge
             
             // Print all complete rows to file
             for(int i = 0; i < numRows; i++)
@@ -193,20 +193,53 @@ public class FileWrite {
         FileWrite fw = new FileWrite();
         fw.writeContentsToFile(mergedFileName, fileOneData, false);
     }
-    
+
     // Your TODO
     
 
     // Create a method that can join 3 different file together
     
-    
+    public String joinThreeFiles(String fileOne, String fileTwo, String fileThree)
+    {
+        try
+        {
+            // + " " is to separate the combined files
+            String fileOneData = Files.readString(Path.of(fileOne)) + " ";
+            String fileTwoData = Files.readString(Path.of(fileTwo)) + " ";
+            String fileThreeData = Files.readString(Path.of(fileThree)) + " ";
+            return fileOneData + fileTwoData + fileThreeData;
+        }
+        catch (IOException e)
+        {
+            System.out.println(e);
+        }
+        // Return null if there is an error
+        return null;
+    }
     
     // Create a method that creates a new file with the contents of the ‘AllWords.txt’ file sorted by word length rather than alphabetically
-    
+    public ArrayList<String> wordLengthSortedAllWords(String file)
+    {
+        FileRead fileRead = new FileRead();
+        ArrayList<String> allWordsList = fileRead.retrieveDataListFromFile(file);
+        allWordsList.sort(lengthComparator);
+        return allWordsList;
+    }
 
-    
+    // Phind wrote the Comparator to sort by character length, the rest of the method was written by myself
+    private final Comparator<String> lengthComparator = new Comparator<String>()
+    {
+        @Override
+        public int compare(String o1, String o2)
+        {
+            return o1.length() - o2.length();
+        }
+    };
+
     // Create a method that writes all sent data (either a String or a List) to a file with a common format decided by you
-    
-    
+    public String writeFileWithCustomData(ArrayList<String> input, String outputFileName, String outputDirectory)
+    {
+        return "";
+    }
     
 }
