@@ -1,4 +1,6 @@
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -13,8 +15,12 @@ public class Runner
         FileEncrypter encrypt = new FileEncrypter();
         RunnerHandlers handlers = new RunnerHandlers();
         String allWordsDir = handlers.getAllWordsDir();
+        ArrayList<String> characterCountFormattedWords = writer.wordLengthSortedAllWords(allWordsDir);
 
-        ArrayList<String> characterFormattedWords = writer.wordLengthSortedAllWords(allWordsDir);
+
+        // System.out.println(characterCountFormattedWords);
+
+        handlers.createFileWithCharacterSortedWords("src/CharacterSorted.txt", characterCountFormattedWords);
         System.out.println("AllWords.txt contains " + reader.getTotalLines(allWordsDir) + " lines of text!");
         handlers.doesFileContainStringRunner();
         handlers.onlyReturnCertainLengthWordsRunner();
@@ -53,5 +59,20 @@ class RunnerHandlers
     public String getAllWordsDir()
     {
         return allWordsDir;
+    }
+
+    public void createFileWithCharacterSortedWords(String saveToPath, ArrayList<String> dataToWrite)
+    {
+        File file = new File(saveToPath);
+        try
+        {
+            FileWriter fileWriter = new FileWriter(saveToPath);
+            fileWriter.write(dataToWrite.toString());
+            fileWriter.close();
+        }
+        catch(IOException e)
+        {
+            System.out.println(e);
+        }
     }
 }
