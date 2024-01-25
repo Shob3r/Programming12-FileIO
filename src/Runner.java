@@ -22,6 +22,9 @@ public class Runner
 
         handlers.createFileWithCharacterSortedWords("src/CharacterSorted.txt", characterCountFormattedWords);
         System.out.println("AllWords.txt contains " + reader.getTotalLines(allWordsDir) + " lines of text!");
+        System.out.println("AllWords.txt contains " + reader.getTotalCharacters(allWordsDir) + " characters of text!");
+        System.out.println("Finally, AllWords.txt contains " + reader.getTotalWords(allWordsDir) + " words!");
+
         handlers.doesFileContainStringRunner();
         handlers.onlyReturnCertainLengthWordsRunner();
     }
@@ -34,7 +37,7 @@ class RunnerHandlers
     FileRead reader = new FileRead();
     public void doesFileContainStringRunner()
     {
-        System.out.println("What file would you like to find in the file containing every word?");
+        System.out.println("What word would you like to find in the file containing every word?");
         String wordToSearch = scanner.next();
 
         if(reader.doesFileContainString(allWordsDir, wordToSearch, false))

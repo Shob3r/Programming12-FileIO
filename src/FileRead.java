@@ -140,19 +140,22 @@ public class FileRead {
 
     // Should Return 466,544 each time since that's how many lines there are in the file
     // For whatever reason I have to use long for this method because it does not allow int (this is so sad)
-    public long getTotalLines(String inputFilePath)
+    public long getTotalLines(String inputFilePath) throws IOException
     {
-        try
-        {
-            return Files.lines(Paths.get(inputFilePath)).count();   // The number of lines also equals the number of words, as there is one word per line
-        }
-        catch (IOException e)
-        {
-            System.out.println(e);
-            return -1;
-        }
+        return Files.lines(Paths.get(inputFilePath)).count();
     }
+    public long getTotalWords(String file) throws IOException
+    {
+        String fileData = retrieveDataFromFile(file);
+        String[] words = fileData.split("\\s+");
 
+        return words.length;
+    }
+    public long getTotalCharacters(String file) throws IOException
+    {
+        String fileData = retrieveDataFromFile(file);
+        return fileData.length();
+    }
     // Any file path stuff just assumes a path I am referencing is in the root directory (As an example, what should be "AllWords.txt" can only be written as "src/AllWords.txt", or it will think it's in (goodbye 30 minutes of my time))
     public boolean doesFileContainString(String inputFilePath, String word, boolean isCaseSensitive)
     {

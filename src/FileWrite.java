@@ -227,7 +227,7 @@ public class FileWrite {
     }
 
     // Phind wrote the Comparator to sort by character length, the rest of the method was written by myself
-    private final Comparator<String> lengthComparator = new Comparator<String>()
+    private Comparator<String> lengthComparator = new Comparator<String>()
     {
         @Override
         public int compare(String o1, String o2)
