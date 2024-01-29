@@ -1,8 +1,7 @@
-
 import java.util.ArrayList;
 
 
-public class FileDecrypter
+public class FileDecrypt
 {
     public boolean containsRealWord(String phrase)
     {
@@ -17,7 +16,7 @@ public class FileDecrypter
         {
             for(String dictWord: allWords)
             {
-                if(dictWord.toLowerCase().equals(myWord.toLowerCase()))
+                if(dictWord.equalsIgnoreCase(myWord))
                 {
                     foundRealWord = true;
                     break;

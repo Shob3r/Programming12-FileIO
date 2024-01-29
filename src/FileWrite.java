@@ -1,7 +1,9 @@
 
 import java.io.*;
 import java.nio.file.Files;
+import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -237,9 +239,19 @@ public class FileWrite {
     };
 
     // Create a method that writes all sent data (either a String or a List) to a file with a common format decided by you
-    public String writeFileWithCustomData(ArrayList<String> input, String outputFileName, String outputDirectory)
+    public void writeFileWithCustomData(String inputData, String outputFileName, String outputDirectory) throws IOException
     {
-        return "";
+        String dirJoined = outputDirectory + "/" + outputFileName;
+
+        try
+        {
+            FileWriter writer = new FileWriter(dirJoined);
+            writer.write(inputData);
+            writer.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println("An error occured when trying to write to the file: " + e );
+        }
     }
-    
 }
