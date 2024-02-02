@@ -11,7 +11,7 @@ public class Runner
         FileRead reader = new FileRead();
         FileWrite writer = new FileWrite();
         FileDecrypt decrypt = new FileDecrypt();
-        FileEncrypter encrypt = new FileEncrypter();
+        FileEncrypt encrypt = new FileEncrypt();
         RunnerHandlers handlers = new RunnerHandlers();
         String allWordsDir = handlers.getAllWordsDir();
         ArrayList<String> characterCountFormattedWords = writer.wordLengthSortedAllWords(allWordsDir);
@@ -24,7 +24,7 @@ public class Runner
         System.out.println("AllWords.txt contains " + reader.getTotalCharacters(allWordsDir) + " characters of text!");
         System.out.println("Finally, AllWords.txt contains " + reader.getTotalWords(allWordsDir) + " words!");
 
-        System.out.println(encrypt.encodedData(characterCountFormattedWords, 10));
+        System.out.println(encrypt.encodedData(characterCountFormattedWords, 1));
 
         handlers.doesFileContainStringRunner();
         handlers.onlyReturnCertainLengthWordsRunner();
