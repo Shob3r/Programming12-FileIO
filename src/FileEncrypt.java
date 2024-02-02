@@ -2,40 +2,50 @@ import java.util.ArrayList;
 
 public class FileEncrypt extends EncryptionBase
 {
-    
     FileRead read = new FileRead();
     FileWrite write = new FileWrite();
-    
 
-    
     public String encodeString(String message, int shift)
     {
+        message = message.toLowerCase(); // Temporary until I add character conversion for capitalized letters
         StringBuilder encodedString = new StringBuilder();
         
         for(int i = 0; i < message.length(); i++) // Loop as many times as there are letters
         {
             char tempChar = message.charAt(i); // Snag each character from the string one at a time
 
-            // Now, do the converting
-            int letterVal = characterCast(tempChar);
-            int shiftedLetterValue = letterVal + shift;
-            // ASCII character 122 is lowercase 'z', while ASCII character 65 is uppercase 'A'
-            if(shiftedLetterValue > 122)
+            if(tempChar == ' ') // Spacebar inputs should be ignored when encrypting the String
             {
-                int remainder = shiftedLetterValue - 122;
-                shiftedLetterValue = 65 + (remainder - 1);
+                encodedString.append(" ");
             }
-            else if (shiftedLetterValue < 65)
+            else
             {
-                int remainder = 65 - shiftedLetterValue;
-                shiftedLetterValue = 122 - (shiftedLetterValue + 1);
+                // Now, do the converting
+                int characterValue = confineIntegerWithinAlphabet(shift, characterCast(tempChar));
+                char shiftedChar = convertBackToChar(characterValue);
+                encodedString.append(shiftedChar);
             }
-
-            char newChar = convertBackToChar(shiftedLetterValue);
-            encodedString.append(newChar);
         }
-        
         return encodedString.toString();
+    }
+
+    public int confineIntegerWithinAlphabet(int shift, int letterVal)
+    {
+        int shiftedLetterValue = letterVal + shift;
+
+        // ASCII character 122 is lowercase 'z', while ASCII character 97 is uppercase 'a'
+        // For now, I will only be dealing with lowercase ASCII characters, but will probably add capital letters to the encryption at some point (it's really easy not gonna lie
+        if(shiftedLetterValue > 122)
+        {
+            int remainder = shiftedLetterValue - 122;
+            shiftedLetterValue = 97 + (remainder - 1);
+        }
+        else if (shiftedLetterValue < 97)
+        {
+            int remainder = 97 - shiftedLetterValue;
+            shiftedLetterValue = 122 - (shiftedLetterValue + 1);
+        }
+        return shiftedLetterValue;
     }
 
     public ArrayList<String> encodedData(ArrayList<String> unencodedData, int shift)

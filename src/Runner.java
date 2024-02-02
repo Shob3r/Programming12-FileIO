@@ -24,7 +24,7 @@ public class Runner
         System.out.println("AllWords.txt contains " + reader.getTotalCharacters(allWordsDir) + " characters of text!");
         System.out.println("Finally, AllWords.txt contains " + reader.getTotalWords(allWordsDir) + " words!");
 
-        System.out.println(encrypt.encodedData(characterCountFormattedWords, 1));
+        System.out.println(decrypt.bruteForceDecryptString(encrypt.encodeString("the quick brown fox jumped over the lazy dog", 3)));
 
         handlers.doesFileContainStringRunner();
         handlers.onlyReturnCertainLengthWordsRunner();
