@@ -1,7 +1,3 @@
-import java.util.ArrayList;
-import java.util.Scanner;
-
-
 public class FileDecrypt extends EncryptionBase
 {
     FileEncrypt fileEncrypt = new FileEncrypt();
@@ -9,50 +5,33 @@ public class FileDecrypt extends EncryptionBase
     public boolean containsRealWord(String phrase)
     {
         FileRead reader = new FileRead();
-
         String[] phraseWords = phrase.split(" "); // Breaks my phrase down into individual words
-        ArrayList<String> allWords = reader.retrieveDataListFromFile("src/AllWords.txt");
+        String allWords = reader.retrieveDataFromFile("src/AllWords.txt");
 
-        boolean foundRealWord = false;
+        // Special thanks to Phind AI for writing this little segment of the codebase
+        // Basically, it loops through each word and checks if any word is not in AllWords. if that is the case, return false.
+        // I'm sure the comments created by it are more than enough explanation for the reader, but I thought it may be useful to prove that
+        // I do know what's going on, and I was just a little stupid when trying to improve this method
+        // (The previous method didn't work, so I had to rewrite it)
 
-        for(String myWord: phraseWords)
+        for (String word : phraseWords)
         {
-            for(String dictWord: allWords)
+            if (!allWords.contains(word))
             {
-                if(dictWord.equalsIgnoreCase(myWord))
-                {
-                    System.out.println("decrypted");
-                    foundRealWord = true;
-                    break;
-                }
+                return false; // If any word is not found in allWords, return false
             }
         }
-
-        return foundRealWord;
+        return true; // All words were found in allWords
     }
-
-    // Using already existing code to make the decryption algorithms work!!
     public String bruteForceDecryptString(String encryptedData)
     {
-        Scanner scanner = new Scanner(System.in);
         int currentShift = 1;
         while(true)
         {
-            System.out.println(decryptStringWithShift(encryptedData, currentShift));
-            System.out.println("Does the above data look correct to you?");
-            System.out.println("1. Yes");
-            System.out.println("2. No");
-            int choice = scanner.nextInt();
-
-            if(choice == 1)
-            {
-                break;
-            }
-            else if(choice == 2)
-            {
-                currentShift++;
-            }
+            if(containsRealWord(decryptStringWithShift(encryptedData, currentShift))) break;
+            else currentShift++;
         }
+
         return decryptStringWithShift(encryptedData, currentShift);
     }
 
