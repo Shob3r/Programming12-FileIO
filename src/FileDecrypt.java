@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class FileDecrypt extends EncryptionBase
@@ -33,18 +34,26 @@ public class FileDecrypt extends EncryptionBase
     // Using already existing code to make the decryption algorithms work!!
     public String bruteForceDecryptString(String encryptedData)
     {
-        String currentDecryptedData = encryptedData;
-
-        for(int i = 1; i <= 26; i++)
+        Scanner scanner = new Scanner(System.in);
+        int currentShift = 1;
+        while(true)
         {
-            currentDecryptedData = fileEncrypt.encodeString(encryptedData, 26 - i);
-            if(containsRealWord(currentDecryptedData))
+            System.out.println(decryptStringWithShift(encryptedData, currentShift));
+            System.out.println("Does the above data look correct to you?");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+            int choice = scanner.nextInt();
+
+            if(choice == 1)
             {
                 break;
             }
+            else if(choice == 2)
+            {
+                currentShift++;
+            }
         }
-        // If the String cannot match anything found in AllWords, return null (may change this later)
-        return currentDecryptedData;
+        return decryptStringWithShift(encryptedData, currentShift);
     }
 
     public String decryptStringWithShift(String encryptedData, int shift)
