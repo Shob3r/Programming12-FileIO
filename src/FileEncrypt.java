@@ -14,7 +14,7 @@ public class FileEncrypt extends EncryptionBase
         {
             char tempChar = message.charAt(i); // Snag each character from the string one at a time
 
-            if(tempChar == ' ') // Spacebar inputs should be ignored when encrypting the String
+            if(super.isCharacterSpecial(tempChar)) // Spacebar inputs should be ignored when encrypting the String
             {
                 encodedString.append(" ");
             }

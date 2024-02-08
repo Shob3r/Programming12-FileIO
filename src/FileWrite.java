@@ -196,10 +196,7 @@ public class FileWrite {
         fw.writeContentsToFile(mergedFileName, fileOneData, false);
     }
 
-    // Your TODO
-    
 
-    // Create a method that can join 3 different file together
     
     public String joinThreeFiles(String fileOne, String fileTwo, String fileThree)
     {
@@ -251,7 +248,7 @@ public class FileWrite {
         }
         catch (IOException e)
         {
-            System.out.println("An error occured when trying to write to the file: " + e );
+            System.out.println("An error occurred when trying to write to the file: " + e );
         }
     }
 }
