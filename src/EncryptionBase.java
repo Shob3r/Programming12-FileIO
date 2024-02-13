@@ -12,8 +12,9 @@ public class EncryptionBase
         return (char)number;
     }
 
-    public boolean isCharacterSpecial(char letter)
+    public boolean isSpecialCharacter(char letter)
     {
-        return Character.isLetter(letter);
+        // Checks if the input character is a special character (like !, #, %, *, etc.)
+        return !Character.isLetter(letter);
     }
 }
